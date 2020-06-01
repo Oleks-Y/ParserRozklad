@@ -10,5 +10,4 @@ class ApiKpiRozkladApplicationTests {
     void testApiKpiRozkladApplication() {
 
     }
-
 }

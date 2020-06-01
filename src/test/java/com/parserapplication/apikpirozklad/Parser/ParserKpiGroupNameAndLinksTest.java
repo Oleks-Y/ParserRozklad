@@ -1,7 +1,6 @@
 package com.parserapplication.apikpirozklad.Parser;
 
 
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -26,8 +25,4 @@ public class ParserKpiGroupNameAndLinksTest {
         String[] actualResult = parserKpiGroupNameAndLinks.processGroupString(group);
         Assert.assertEquals(actualResult, expectedResult, "Arrays differs");
     }
-
-
-
-
 }

@@ -15,7 +15,7 @@ import java.util.List;
 public class GroupInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(JsonViews.defaultJsonView.class)
     private int groupId;
 

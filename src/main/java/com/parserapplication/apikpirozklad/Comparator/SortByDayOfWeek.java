@@ -4,6 +4,9 @@ import com.parserapplication.apikpirozklad.Entities.LessonInfo;
 
 import java.util.Comparator;
 
+/**
+ * SortByDayOfWeek object sorts weeks by day number
+ */
 public class SortByDayOfWeek implements Comparator<LessonInfo> {
 
     @Override

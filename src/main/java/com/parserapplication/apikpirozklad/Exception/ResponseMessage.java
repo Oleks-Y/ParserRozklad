@@ -4,7 +4,9 @@ package com.parserapplication.apikpirozklad.Exception;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-
+/**
+ * ResponseMessage object
+ */
 @JsonPropertyOrder(value = {"type", "code", "message"})
 public class ResponseMessage {
     @JsonProperty("code")
@@ -16,13 +18,20 @@ public class ResponseMessage {
     @JsonProperty("message")
     private String message;
 
+    /**
+     * @param type    type of error
+     * @param code    code of error
+     * @param message message of error
+     */
     public ResponseMessage(String type, int code, String message) {
         this.type = type;
         this.code = code;
         this.message = message;
     }
 
-    public int getCode() {return code;}
+    public int getCode() {
+        return code;
+    }
 
     public void setCode(int code) {
         this.code = code;

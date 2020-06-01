@@ -1,6 +1,9 @@
 package com.parserapplication.apikpirozklad.Entities;
 
 
+/**
+ * Describes table relationships
+ */
 public final class JsonViews {
     public interface defaultJsonView {
 

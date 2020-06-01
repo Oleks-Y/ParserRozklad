@@ -10,6 +10,7 @@ import com.parserapplication.apikpirozklad.Parser.ParserKpiGroupLessons;
 import com.parserapplication.apikpirozklad.Parser.ParserKpiGroupNameAndLinks;
 import com.parserapplication.apikpirozklad.Repos.GroupRepository;
 import com.parserapplication.apikpirozklad.Repos.LessonRepository;
+import lombok.Data;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,26 +21,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Data
 @RestController
 @RequestMapping
+/**
+ * Controller object
+ */
 public class Controller {
 
     private final GroupRepository groupRepository;
     private final LessonRepository lessonRepository;
 
-    public Controller(GroupRepository groupRepository, LessonRepository lessonRepository) {
-        this.groupRepository = groupRepository;
-        this.lessonRepository = lessonRepository;
-    }
-
+    /**
+     * This method returns greeting message
+     *
+     * @return greeting message
+     */
     @GetMapping
     public String getMainPage() {
         return "KPI-API-ROZKLAD";
     }
 
+    /**
+     * This method searches in DB id that matches group
+     *
+     * @param id id of group
+     * @return info and lessons of one group
+     * @throws ParserException throws exception if instance doesn't exist
+     */
     @JsonView(JsonViews.extendJsonView.class)
-    @GetMapping("/findGroupAndLessonsById/{id}")
-    public Object findByGroupId(@PathVariable int id) throws ParserException {
+    @GetMapping("/getGroupAndLessonsById/{id}")
+    public Object getGroupAndLessonsById(@PathVariable int id) throws ParserException {
         Optional<GroupInfo> group = groupRepository.findByGroupId(id);
         if (group.isPresent()) {
             return group;
@@ -48,9 +60,16 @@ public class Controller {
         }
     }
 
+    /**
+     * This method searches in DB name that matches group
+     *
+     * @param nameOfGroup name of group
+     * @return info and lessons of one group
+     * @throws ParserException throws exception if instance doesn't exist
+     */
     @JsonView(JsonViews.extendJsonView.class)
-    @GetMapping("/findGroupAndLessonsByName/{nameOfGroup}")
-    public Optional<GroupInfo> findGroupByName(@PathVariable String nameOfGroup, @PathVariable String id) throws ParserException, NotFoundException {
+    @GetMapping("/getGroupAndLessonsByName/{nameOfGroup}")
+    public Optional<GroupInfo> getGroupAndLessonsByName(@PathVariable String nameOfGroup) throws ParserException {
         Optional<GroupInfo> group = groupRepository.findByGroupName(nameOfGroup);
         if (group.isPresent()) {
             return group;
@@ -59,28 +78,11 @@ public class Controller {
         }
     }
 
-    @JsonView(JsonViews.extendJsonView.class)
-    @GetMapping("/getLessonsByGroupId/{id}")
-    public Optional<List<LessonInfo>> findLessonsByGroupId(@PathVariable int id) {
-        Optional<List<LessonInfo>> lessons = lessonRepository.findAllByLessonOfGroupId(groupRepository.findById(id));
-        if (lessons.isPresent()) {
-            return lessons;
-        } else {
-            throw new NotFoundException("Lesson not found");
-        }
-    }
-
-    @JsonView(JsonViews.extendJsonView.class)
-    @GetMapping("/getLessonsByGroupName/{name}")
-    public Optional<List<LessonInfo>> getLessonsByGroupName(@PathVariable String name) {
-        Optional<List<LessonInfo>> lessons = lessonRepository.findAllByLessonOfGroupId(groupRepository.findByGroupName(name));
-        if (lessons.isPresent()) {
-            return lessons;
-        } else {
-            throw new NotFoundException("Lesson not found");
-        }
-    }
-
+    /**
+     * This method fetches all groups with urls from DB
+     *
+     * @return all groups with urls
+     */
     @JsonView(JsonViews.defaultJsonView.class)
     @GetMapping("/getAllGroups")
     public List<GroupInfo> getAllGroups() {
@@ -89,6 +91,12 @@ public class Controller {
         return groupRepository.findAll();
     }
 
+    /**
+     * This method updates lesson info in DB
+     *
+     * @return String success
+     * @throws IOException interrupted I/O operations
+     */
     @GetMapping("/updateLessons")
     public String updateLessons() throws IOException {
         ParserKpiGroupLessons parser = new ParserKpiGroupLessons();
@@ -106,6 +114,12 @@ public class Controller {
         return "sucksex";
     }
 
+    /**
+     * This method updates group info in DB
+     *
+     * @return String success
+     * @throws IOException interrupted I/O operations
+     */
     @GetMapping("/updateGroups")
     public String updateGroups() throws IOException {
         System.out.println("Starting updating name groups and urls...");
@@ -115,6 +129,11 @@ public class Controller {
         return "sucksex";
     }
 
+    /**
+     * This method updates group and lesson info in DB
+     *
+     * @throws IOException interrupted I/O operations
+     */
     @GetMapping("/updateDatabase")
     public void updateDatabase() throws IOException {
         updateGroups();
