@@ -122,7 +122,7 @@ public class Controller {
      */
     @GetMapping("/updateGroups")
     public String updateGroups() throws IOException {
-        System.out.println("Starting updating name groups and urls...");
+        System.out.println("Starting updating name groups and urls...!!!");
         Map<String, String> groups = new ParserKpiGroupNameAndLinks().parseGroups();
         groups.forEach((group, url) -> groupRepository.save(new GroupInfo(group, url)));
         System.out.println("sucksex");
@@ -138,5 +138,11 @@ public class Controller {
     public void updateDatabase() throws IOException {
         updateGroups();
         updateLessons();
+        // TODO here get all groups, and add it to our format
+        // TODO select all subjects
+        // TODO select all lessons
+        // TODO fix errors while parsing
+
+
     }
 }

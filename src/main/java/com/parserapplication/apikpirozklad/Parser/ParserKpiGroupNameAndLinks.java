@@ -6,9 +6,12 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.parserapplication.apikpirozklad.Utils.Unicode.unicodeEncode;
@@ -62,12 +65,27 @@ public class ParserKpiGroupNameAndLinks {
     public Map<String, String> getGroupNameAndLink() throws IOException {
         String[] groups = getNamesOfAllGroups();
         Map<String, String> groupNameAndLinkMap = new LinkedHashMap<>();
+        List<String> groupsFailed = new ArrayList<String>();
         for (String group : groups) {
-            Document doc = Jsoup.parse(getResponse(group.substring(1, group.length() - 1)));
+            String response = "";
+            try {
+                response = getResponse(group.substring(1, group.length() - 1));
+            } catch (Exception e ){
+                System.out.println("Connection timeout on group : " + group);
+                groupsFailed.add(group);
+                continue;
+            }
+            Document doc = Jsoup.parse(response);
+            if(doc==null){
+                continue;
+            }
             String partialLink = doc.select("a[href*=View]").first().attr("href");
             String linkGroup = "http://rozklad.kpi.ua/Schedules/" + partialLink.substring(partialLink.indexOf("View"));
             groupNameAndLinkMap.put(group.substring(1, group.length() - 1), linkGroup);
         }
+
+        float failedPercent = groupsFailed.size() /groupNameAndLinkMap.size();
+        System.out.println("Parsing failed for " + failedPercent + " % groups");
         return groupNameAndLinkMap;
     }
 
@@ -79,7 +97,13 @@ public class ParserKpiGroupNameAndLinks {
     private String[] getNamesOfAllGroups() {
         StringBuilder contentString = new StringBuilder();
         for (char letter : uaAlphabet) {
-            String content = getResponseWithJson(letter);
+            String content = "";
+            try {
+                 content = getResponseWithJson(letter);
+            }catch (java.net.ConnectException e ){
+                System.out.println("Failed for letter "+ letter);
+                continue;
+            }
             if (content.contains("null") || content.contains("науки")) {
                 continue;
             }
@@ -114,7 +138,7 @@ public class ParserKpiGroupNameAndLinks {
      *
      * @return String of groups found by letter
      */
-    private String getResponseWithJson(char letter) {
+    private String getResponseWithJson(char letter) throws ConnectException {
         return $("-d '{'prefixText': '" + unicodeEncode(letter) + "' , 'count': 10 }' -H 'Content-Type: application/json; charset=utf-8' " + targetUrl);
     }
 
@@ -157,7 +181,9 @@ public class ParserKpiGroupNameAndLinks {
      * @throws IOException interrupted I/O operations
      */
     private String getResponse(String groupFullName) throws IOException {
-        String groupUrlPostData = "__EVENTTARGET=&__EVENTARGUMENT=&ctl00%24MainContent%24ctl00%24txtboxGroup=" + groupFullName.toUpperCase() + "&ctl00%24MainContent%24ctl00%24btnShowSchedule=%D0%A0%D0%BE%D0%B7%D0%BA%D0%BB%D0%B0%D0%B4+%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D1%8C&__EVENTVALIDATION=" + groupUrlPostKey;
-        return $("-d \"" + groupUrlPostData + "\" -H \"Content-Type: application/x-www-form-urlencoded\" \"" + targetGroupUrl + "\"");
+        String groupUrlPostData = "__EVENTTARGET=&__EVENTARGUMENT=&ctl00%24MainContent%24ctl00%24txtboxGroup=" + groupFullName.toUpperCase() +
+                "&ctl00%24MainContent%24ctl00%24btnShowSchedule=%D0%A0%D0%BE%D0%B7%D0%BA%D0%BB%D0%B0%D0%B4+%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D1%8C&__EVENTVALIDATION=" + groupUrlPostKey;
+        String request = "--connect-timeout=60 -d \"" + groupUrlPostData + "\" -H \"Content-Type: application/x-www-form-urlencoded\" \"" + targetGroupUrl + "\"";
+        return $(request);
     }
 }
