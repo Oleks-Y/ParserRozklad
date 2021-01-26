@@ -138,10 +138,9 @@ public class Controller {
     public void updateDatabase() throws IOException {
         updateGroups();
         updateLessons();
-        // TODO here get all groups, and add it to our format
-        // TODO select all subjects
-        // TODO select all lessons
-        // TODO fix errors while parsing
+        groupRepository.parseGroups();
+        groupRepository.parseSubjects();
+        groupRepository.parseLessons();
 
 
     }
