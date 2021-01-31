@@ -1,6 +1,9 @@
 import com.parserapp.apikpirozklad.Parser.GroupLinksParser;
+import org.junit.Assert;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testng.annotations.Test;
+
+import java.util.Map;
 
 @SpringBootTest
 public class GroupLinkParserTest {
@@ -14,8 +17,9 @@ public class GroupLinkParserTest {
             System.out.println(e);
         }
 
-        parser.parseGroupsWithLinks();
+        Map<String, String> result =  parser.parseGroupsWithLinks();
 
+        Assert.assertTrue(result.size()>0);
 
     }
 }

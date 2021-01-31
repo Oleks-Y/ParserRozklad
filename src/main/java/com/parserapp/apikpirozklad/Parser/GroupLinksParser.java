@@ -62,7 +62,9 @@ public class GroupLinksParser {
                 partialLink = null;
                 linkGroup = null;
             }
-            else if(doc.select("a[href*=View]").first() ==null){
+            if(doc.select("a[href*=View]").first()==null){
+                // it`s error handling or something like that
+                groupsFailed.add(group);
                 continue;
             }
             else {
@@ -72,7 +74,7 @@ public class GroupLinksParser {
             groupNameAndLinkMap.put(group.substring(1, group.length() - 1), linkGroup);
         }
 
-        System.out.println("Parsing failed for " + groupsFailed + " groups of "+groupNameAndLinkMap.size()+" groups ");
+        System.out.println("Parsing failed for " + groupsFailed.size() + " groups of "+groupNameAndLinkMap.size()+" groups ");
         return groupNameAndLinkMap;
     }
 
@@ -125,7 +127,7 @@ public class GroupLinksParser {
                 "&ctl00%24MainContent%24ctl00%24btnShowSchedule=%D0%A0%D0%BE%D0%B7%D0%BA%D0%BB%D0%B0%D0%B4+%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D1%8C&__EVENTVALIDATION=" + groupUrlPostKey;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(targetGroupUrl))
-                .header("Content-Type", "applications/x-www-form-urlencoded")
+                .header("Content-Type", "application/x-www-form-urlencoded")
                 .POST(HttpRequest.BodyPublishers.ofString(groupUrlPostData))
                 .timeout(Duration.ofSeconds(50))
                 .build();
