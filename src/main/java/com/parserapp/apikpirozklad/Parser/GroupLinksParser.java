@@ -124,8 +124,7 @@ public class GroupLinksParser {
      */
     private String getGroups(String groupFullName) throws IOException, InterruptedException{
         String groupUrlPostData = "__EVENTTARGET=&__EVENTARGUMENT=&ctl00%24MainContent%24ctl00%24txtboxGroup=" + groupFullName.toUpperCase() +
-                "&ctl00%24MainContent%24ctl00%24btnShowSchedule=%D0%A0%D0%BE%D0%B7%D0%BA%D0%BB%D0%B0%D0%B4+%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D1%8C&__EVENTVALIDATION="
-                + groupUrlPostKey;
+                "&ctl00%24MainContent%24ctl00%24btnShowSchedule=%D0%A0%D0%BE%D0%B7%D0%BA%D0%BB%D0%B0%D0%B4+%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D1%8C&__EVENTVALIDATION=" + groupUrlPostKey;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(targetGroupUrl))
                 .header("Content-Type", "application/x-www-form-urlencoded")
