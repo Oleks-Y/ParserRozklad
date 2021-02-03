@@ -15,17 +15,13 @@ public class GroupInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-   // @JsonView(JsonViews.defaultJsonView.class)
     private int groupId;
 
- //   @JsonView(JsonViews.defaultJsonView.class)
     private String groupName;
 
-   // @JsonView(JsonViews.defaultJsonView.class)
     private String groupUrl;
 
     @OneToMany(mappedBy = "lessonOfGroupId")
-    //@JsonView(JsonViews.extendJsonView.class)
     private List<LessonInfo> lessons = new ArrayList<>();
 
     /**
@@ -44,6 +40,4 @@ public class GroupInfo {
      */
     public GroupInfo() {
     }
-
-
 }

@@ -12,37 +12,26 @@ public class LessonInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-   // @JsonView(JsonViews.defaultJsonView.class)
     private int lessonID;
 
-   // @JsonView(JsonViews.defaultJsonView.class)
     private String dayNumber;
 
-   // @JsonView(JsonViews.defaultJsonView.class)
     private String nameDay;
 
-  //  @JsonView(JsonViews.defaultJsonView.class)
     private String lessonNumber;
 
-  //  @JsonView(JsonViews.defaultJsonView.class)
     private String numberWeek;
 
-  //  @JsonView(JsonViews.defaultJsonView.class)
     private String timeStartLesson;
 
-  //  @JsonView(JsonViews.defaultJsonView.class)
     private String timeEndLesson;
 
-  //  @JsonView(JsonViews.defaultJsonView.class)
     private String lessonName;
 
-   // @JsonView(JsonViews.defaultJsonView.class)
     private String teacherName;
 
-   // @JsonView(JsonViews.defaultJsonView.class)
     private String roomNumber;
 
-  //  @JsonView(JsonViews.defaultJsonView.class)
     private String roomType;
 
     @ManyToOne
@@ -70,6 +59,7 @@ public class LessonInfo {
      * @param roomNumber      number of room
      * @param roomType        type of room
      */
+
     public LessonInfo(String dayNumber, String nameDay, String lessonNumber, String numberWeek, String timeStartLesson, String timeEndLesson, String lessonName, String teacherName, String roomNumber, String roomType) {
         this.dayNumber = dayNumber;
         this.nameDay = nameDay;
@@ -82,7 +72,6 @@ public class LessonInfo {
         this.roomNumber = roomNumber;
         this.roomType = roomType;
     }
-
 
     /**
      * This method is used to set lesson info such as lessonName, teacherName, roomNumber, roomType.

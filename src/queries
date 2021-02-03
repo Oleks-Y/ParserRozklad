@@ -1,0 +1,16 @@
+1. Запрос для удаления всех уроков (lessons) с датами:
+DELETE FROM lesson_info
+where lesson_name like '__.__'
+
+Для проверки запроса на удаление уроков с датами (успех = 0 записей):
+SELECT * FROM lesson_info
+WHERE lesson_name like '__.__'
+
+2. Запрос для заполнения всех аудиторий с пустым типом (лек/прак) на практику:
+UPDATE lesson_info
+SET room_type='Прак'
+where room_type is NULL
+
+Для проверки запроса на заполнение аудиторий:
+SELECT * FROM lesson_info
+where room_type is NULL
