@@ -100,8 +100,8 @@ public class LessonsForGroupParser {
                         row.setNameDay(daysOfWeek[j - 1]);
                         row.setLessonNumber(String.valueOf(i));
                         row.setNumberWeek(String.valueOf(lessonWeek));
-                        row.setTimeStartLesson(timeOfLesson[j - 1][0]);
-                        row.setTimeEndLesson(timeOfLesson[j - 1][1]);
+                        row.setTimeStartLesson(timeOfLesson[i - 1][0]);
+                        row.setTimeEndLesson(timeOfLesson[i - 1][1]);
                         table.add(row);
                     }
                 }
